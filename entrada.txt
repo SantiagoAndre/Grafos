@@ -1,0 +1,11 @@
+Tipo Grafo 1
+V A B C D E
+E A B 2
+E A C 1
+E A D 10
+E A E 25
+E B C 18
+E B D 5
+E B E 5
+E C D 20
+E C E 2
