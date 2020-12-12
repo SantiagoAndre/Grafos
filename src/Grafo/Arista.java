@@ -85,15 +85,11 @@ public  class Arista implements Comparable{
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+
         final Arista a = (Arista) obj;
-        if( a.getPonderacion()!=-1 && getPonderacion() !=-1){
-            if(!getPonderacion().equals(a.getPonderacion()))
-                return false;
-        }
-        return getNodoInicial().equals(a.getNodoInicial()) && getNodoFinal().equals(a.getNodoFinal());
+
+        return (getNodoInicial().equals(a.getNodoInicial()) && getNodoFinal().equals(a.getNodoFinal()))||
+               (getNodoFinal().equals(a.getNodoInicial()) && getNodoInicial().equals(a.getNodoFinal())) ;
     }
     public Arista invertir(){
         return new Arista(getNodoFinal(),getNodoInicial(),getPonderacion());

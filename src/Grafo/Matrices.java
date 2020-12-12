@@ -62,8 +62,9 @@ public class Matrices {
     
     public static String MatrizToString(int[][] matriz){
         String str = "";
+        String inf= "\u221e";
         for(int[] fila : matriz){
-            str = str+ "\n" +Arrays.toString(fila);
+            str = str+ "\n" +Arrays.toString(fila).replace("-1",inf);
         }
         return str;
     }

@@ -16,7 +16,7 @@ public  class NodoGrafoPonderadoDirigido extends NodoGrafoPonderado{
     public NodoGrafoPonderadoDirigido(Comparable dato) {
         super(dato);
     }
-        @Override
+    
     public void columnaDeAdyasencias(int[] columa,Lista verticesDelGrafo, int columna){
         for(int i=0; i<verticesDelGrafo.getTamano();i++){
             AristaDirigida posibleArista = new AristaDirigida(this, (NodoGrafoPonderado) verticesDelGrafo.get(i));
@@ -27,4 +27,14 @@ public  class NodoGrafoPonderadoDirigido extends NodoGrafoPonderado{
                 columa[i]=0;
         }
     }
+    /*public void columnaDePesos(int[] columa,Lista verticesDelGrafo, int columna){
+        for(int i=0; i<verticesDelGrafo.getTamano();i++){
+            Arista arista = getAdyasencia((NodoGrafoPonderado) verticesDelGrafo.get(i));
+            
+            if(arista!= null)
+                columa[i]= arista.getPonderacion();
+            else 
+                columa[i]=-1;
+        }
+    }*/
 }

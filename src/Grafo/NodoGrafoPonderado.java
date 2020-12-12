@@ -6,6 +6,7 @@
 package Grafo;
 
 import Lista.Lista;
+import java.util.function.Predicate;
 
 /**
  *
@@ -31,19 +32,36 @@ public  class NodoGrafoPonderado extends NodoGrafo{
         Arista a = new Arista(this,nodo,peso);
         return getAdyasencias().existe(a);
     }
+    
     public boolean addNodoAdyasente(Arista a){
         return getAdyasencias().add(a);
 
     }
-    @Override
-    public void columnaDeAdyasencias(int[] columa,Lista verticesDelGrafo, int columna){
+    public Arista getAdyasencia(NodoGrafoPonderado nodo){
+        Arista posibleArista = new Arista(this, nodo);
+        Predicate p = (Predicate<Arista>) (Arista a) -> {
+            return a.equals(posibleArista);
+        };
+        Lista vAdyasencias = getAdyasencias().getIf(p);
+        if(vAdyasencias.esVacia())
+            return null;
+        return (Arista) vAdyasencias.get(0);        
+    }
+    
+    public void columnaDePesos(int[] columa,Lista verticesDelGrafo, int columna){
+        
         for(int i=0; i<verticesDelGrafo.getTamano();i++){
-            Arista posibleArista = new Arista(this, (NodoGrafoPonderado) verticesDelGrafo.get(i));
-            boolean hayAdyasencia = getAdyasencias().existe(posibleArista);
-            if(hayAdyasencia)
-                columa[i]= 1;
+            NodoGrafoPonderado  otro = (NodoGrafoPonderado)verticesDelGrafo.get(i);
+            if(this.equals(otro)){
+                 columa[i] = 0;
+                 continue;
+            }
+            Arista arista = getAdyasencia( otro);
+            
+            if(arista!= null)
+                columa[i]= arista.getPonderacion();
             else 
-                columa[i]=0;
+                columa[i]=-1;
         }
     }
  

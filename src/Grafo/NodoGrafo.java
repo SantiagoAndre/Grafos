@@ -8,6 +8,7 @@ package Grafo;
 import Lista.ConjuntoOrdenado;
 import Lista.Lista;
 import java.util.Objects;
+import java.util.function.Predicate;
 /**
  *
  * @author santiago
@@ -34,16 +35,9 @@ public abstract class NodoGrafo implements Comparable{
     public void setNodosAdyasentes(ConjuntoOrdenado adyasencias) {
         this.adyasencias = adyasencias;
     }
-    public void columnaDeAdyasencias(int[] columa,Lista verticesDelGrafo, int columna){
-        for(int i=0; i<verticesDelGrafo.getTamano();i++){
-            boolean hayAdyasencia = getAdyasencias().existe((Comparable)verticesDelGrafo.get(i));
-            if(hayAdyasencia)
-                columa[i]= 1;
-            else 
-                columa[i]=0;
-        }
-    }
 
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;

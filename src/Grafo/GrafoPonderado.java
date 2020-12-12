@@ -22,7 +22,9 @@ public  class GrafoPonderado extends Grafo {
     public void  addArista(Comparable datoNodo1,Comparable datoNodo2,int ponderacion) throws Exception{
         NodoGrafoPonderado nodo1 = (NodoGrafoPonderado) getVerticeCondato(datoNodo1);
         NodoGrafoPonderado nodo2 =  (NodoGrafoPonderado) getVerticeCondato(datoNodo2);
-        
+        if(nodo1.existeArista(nodo2, ponderacion) || nodo2.existeArista(nodo1, ponderacion)){
+            throw new Exception("Ya existe la arista");
+        }
         if(nodo1.addNodoAdyasente(crearArista(nodo1,nodo2,ponderacion))){
             nodo2.addNodoAdyasente(crearArista(nodo2,nodo1,ponderacion)); 
         }else
@@ -60,5 +62,16 @@ public  class GrafoPonderado extends Grafo {
             aristas.addAll(nodo.getAdyasencias());
         }
         return aristas;
+    }
+    public  int[][] getMatrizdePesos(){
+        if(esVacio())      
+            return null;
+        int numeroVertices = getVertices().getTamano();
+        int[][] base = new int[numeroVertices][numeroVertices];
+        for(int i = 0; i<getVertices().getTamano();i++){
+            NodoGrafoPonderado nodo = (NodoGrafoPonderado)getVertices().get(i);
+            nodo.columnaDePesos(base[i], getVertices(), i);
+        }
+        return base;
     }
 }

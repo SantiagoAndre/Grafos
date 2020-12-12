@@ -19,9 +19,11 @@ import java.util.Arrays;
  */
 public class TestPrincipal extends Menu{
     private GrafoPonderado grafo;
-    public static String GRAFO_NODIRIGIDO = "Tipo Grafo 2";
-    public static String GRAFO_DIRIGIDO = "Tipo Grafo 1";
-    
+    public static String GRAFO_NODIRIGIDO = "2";
+    public static String GRAFO_DIRIGIDO = "1";
+    public static int TIPO_GRAFO_CARACTERES=0;
+    public static int TIPO_GRAFO_NUMEROS = 1;
+    int tipoGrafo;
     public TestPrincipal() {
         super(5);
         grafo = new GrafoPonderado();
@@ -31,29 +33,37 @@ public class TestPrincipal extends Menu{
     @Override
     void escribirMenu() {
         
-        System.out.println("1. vaciar grafo.");
-        System.out.println("2. leer archivo 'entrada.txt' ");
-        System.out.println("3. Matriz de adyasencias.");        
-        System.out.println("3. imprimir vertices adyasentes a un vertice ");        
-        System.out.println("4. maatriz de adyacencias.");
+        System.out.println("0. vaciar grafo.");
+        System.out.println("1. leer archivo 'entrada.txt' ");
+        System.out.println("2. Imprimir grafo.");        
+        System.out.println("3. Matrix de pesos.");        
+        System.out.println("4. Dijkstra.");
     }
 
     @Override
     public String procesarOpcion(int opc) throws Exception {
          switch (opc) {
-            case 1:
+            case 0:
                 grafo = new GrafoPonderadoDirigido();
                 break;
-            case 2:
-                leerArchivo();
+            case 1:
+                try{
+                 leerArchivo();
+                 System.out.println("Grafo cargado exitosamente.");
+                }catch(Exception e){
+                    grafo  = new GrafoPonderadoDirigido();
+                    System.out.print("No se ha podido crear el grafo: ");
+                    throw e;
+                }
                 break;
-            case 3:
-                return matrizDeAdyasenciasN();
-            case 4:
+            case 2:
                 return "Vertices: "+verticesAString(",","{","}")+"\nAristas: "+grafo.getAristas().toString(", ","{","}");
+            case 3:
+                System.out.println("Matrix de pesos");
+                return matrizDePesos();
+            case 4:
+                System.out.println("Dijkstra");
             case 5:
-                return grafo.toString();
-            case 6:
                 return "Adios.";
             default:
                 return "Opcion incorrecta.";
@@ -74,17 +84,32 @@ public class TestPrincipal extends Menu{
     }
     private void leerArchivo() throws Exception {
         Archivo a = new Archivo();
+        int tipoGrafo;
         a.abrirArchivo("entrada.txt");
-        Object[] lineas = a.getLines().toArray();
+        Object[] lineas =  a.getLines().toArray();
            
-        if(lineas.length==0){
+        if(lineas.length<=1){
             return;
         }
+        
         if(lineas[0].equals(GRAFO_NODIRIGIDO))
             grafo = new GrafoPonderado();
-        else
+        else if(lineas[0].equals(GRAFO_DIRIGIDO)){
             grafo = new GrafoPonderadoDirigido();
-        Object[] array = Arrays.copyOfRange(lineas,1,lineas.length);
+        }else{
+            throw  new Exception("Tipo de grafo no reconocido, Tipo de Grafo: 1. Dirigido; 2. No dirigido");
+        }
+        if(!((String)lineas[1]).matches("-?\\d+(\\.\\d+)?")){
+            throw new Exception("No se puede dar formato al archivo, revice la linea 2");
+        }
+        tipoGrafo = Integer.parseInt((String) lineas[1]);
+        
+        if(tipoGrafo != TIPO_GRAFO_NUMEROS && tipoGrafo != TIPO_GRAFO_CARACTERES){
+            System.out.print("El tipo ingresado no es valido");
+            throw  new Exception("El tipo ingresado no es valido");
+        }
+        this.tipoGrafo = tipoGrafo;
+        Object[] array = Arrays.copyOfRange(lineas,2,lineas.length);
         cargarGrafo(array,grafo,0);
     }
          
@@ -97,36 +122,50 @@ public class TestPrincipal extends Menu{
             cargarGrafo(str,grafo,inicio+1);
             return;
         }
-        String[] linea = str[inicio].toString().split(" ");
-        if(linea[0].equals("V")){
-            agregarVertices(grafo,Arrays.copyOfRange(linea,1,linea.length));
-        }else if (linea[0].equals("E")){
-            grafo.addArista(linea[1], linea[2], Integer.parseInt(linea[3]));
+        
+        String[] linea = str[inicio].toString().split(",");
+        if(grafo.getVertices().getTamano() == 0 ){
+            agregarVertices(grafo,linea);
+        }else{
+            
+            if(!(linea[2].matches("-?\\d+(\\.\\d+)?") && linea[2].charAt(0)!='-' )){ //No es un numero positivo
+               throw new Exception("La arista "+linea[0]+" - "+linea[1]+ " tiene un peso negativo");
+            }
+            int peso = Integer.parseInt(linea[2]);
+            grafo.addArista(formatearElemento(linea[0]), formatearElemento(linea[1]), peso);
         }
          cargarGrafo(str,grafo,inicio+1);
     }
 
     private void agregarVertices(Grafo grafo, String[] vertices) throws Exception {
        for(String vertice:vertices){
-           grafo.addVertice(vertice);
+           grafo.addVertice(formatearElemento(vertice));
        }
     }
-    
-    private String verticesAdyasentesAUnVertice() throws Exception {
-        
-        System.out.print("ingrese nombre del vertice");
-        String nombre = sc.next();
-        NodoGrafo vertice = grafo.getVerticeCondato(nombre);
-        return "(vetice,coste)\n"+vertice.getAdyasencias().toString("\n","","");
-        
-    }
-    private String matrizDeAdyasenciasN(){
-           System.out.print("ingrese exponente de la matriz");
-           int exponente = sc.nextInt();
-            int[][] matriz = grafo.getMatrizdeAdyasencias(exponente);
-            if(matriz == null)
-                return "el exponente no es valido";
-            return Matrices.MatrizToString(matriz);
+ 
+    private String matrizDePesos(){
+         
+            int[][] matriz = grafo.getMatrizdePesos();
            
+            return Matrices.MatrizToString(matriz);
+    }
+    
+    
+    //-------------------------------- funciones auiliare ----------------------------------------//
+    private Comparable formatearElemento(String vertice) throws Exception{
+        Comparable verticeFormateado =vertice;       
+          if(tipoGrafo== 1){//Numeros
+            if(vertice.matches("-?\\d+(\\.\\d+)?")){
+                verticeFormateado = Integer.parseInt(vertice);
+            }
+            
+          }else  if(vertice.length()== 1 && Character.isLetter(vertice.charAt(0))){
+            verticeFormateado = vertice;
+          }else{
+              
+              throw new Exception("No se pudo dar formato al vertice " + vertice +".");
+          }
+               
+        return verticeFormateado;
     }
 }
