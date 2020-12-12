@@ -5,11 +5,12 @@
  */
 package Tests;
 
+import Grafo.Dijkstra;
 import Grafo.Grafo;
 import Grafo.GrafoPonderado;
 import Grafo.GrafoPonderadoDirigido;
-import Grafo.Matrices;
 import Grafo.NodoGrafo;
+import Grafo.NodoGrafoPonderado;
 import Lista.ConjuntoOrdenado;
 import java.util.Arrays;
 
@@ -63,6 +64,7 @@ public class TestPrincipal extends Menu{
                 return matrizDePesos();
             case 4:
                 System.out.println("Dijkstra");
+                return dijkstra();
             case 5:
                 return "Adios.";
             default:
@@ -105,7 +107,7 @@ public class TestPrincipal extends Menu{
         tipoGrafo = Integer.parseInt((String) lineas[1]);
         
         if(tipoGrafo != TIPO_GRAFO_NUMEROS && tipoGrafo != TIPO_GRAFO_CARACTERES){
-            System.out.print("El tipo ingresado no es valido");
+            
             throw  new Exception("El tipo ingresado no es valido");
         }
         this.tipoGrafo = tipoGrafo;
@@ -147,9 +149,18 @@ public class TestPrincipal extends Menu{
          
             int[][] matriz = grafo.getMatrizdePesos();
            
-            return Matrices.MatrizToString(matriz);
+            return matrizToString(matriz);
     }
-    
+    private String dijkstra(){
+        Dijkstra.calculateShortestPathFromSource(grafo, (NodoGrafoPonderado) grafo.getVertices().get(0));
+        ConjuntoOrdenado vertices = grafo.getVertices();
+        for(int i =0; i<vertices.getTamano();i++){
+            NodoGrafoPonderado nodo = (NodoGrafoPonderado) vertices.get(i);
+            System.out.print("Nodo "+nodo+": ");
+            System.out.println(nodo.getShortestPath());
+        }
+        return ":3";
+    }
     
     //-------------------------------- funciones auiliare ----------------------------------------//
     private Comparable formatearElemento(String vertice) throws Exception{
@@ -167,5 +178,13 @@ public class TestPrincipal extends Menu{
           }
                
         return verticeFormateado;
+    }
+    private String matrizToString(int[][] matriz){
+        String str = "";
+        String inf= "\u221e";
+        for(int[] fila : matriz){
+            str = str+ "\n" +Arrays.toString(fila).replace("-1",inf);
+        }
+        return str;
     }
 }

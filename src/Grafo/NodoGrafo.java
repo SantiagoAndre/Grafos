@@ -64,12 +64,15 @@ public abstract class NodoGrafo implements Comparable{
         return getDato().compareTo(nodo.getDato());
     }
     
-    @Override
-    public String toString(){
+    
+    public String toString1(){
         String adyasentes=  getAdyasencias().toString("->","","");
         if(adyasentes.isEmpty())
             return getDato().toString();
         return getDato().toString()+"-->"+adyasentes;
     }
-  
+    @Override
+    public String toString(){
+        return (String) this.getDato();
+    }
 }
