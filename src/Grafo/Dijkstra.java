@@ -9,54 +9,54 @@ import Lista.Lista;
 
 public class Dijkstra {
 
-    public static Grafo calcularLaRutaMasCortaDesdeLaFuente(Grafo graph, NodoGrafoPonderado source) {
+    public static Grafo calcularLaRutaMasCortaDesdeLaFuente(Grafo graph, NodoGrafoPonderado verticeInicial) {
 
-        source.setDistancia(0);
+        verticeInicial.setDistancia(0);
         
-        Lista settledNodes = new Lista();
-        Lista unsettledNodes = new Lista();
-        unsettledNodes.add(source);
+        Lista nodosRevisados = new Lista();
+        Lista nodosSinRevisar = new Lista();
+        nodosSinRevisar.add(verticeInicial);
 
-        while (unsettledNodes.getTamano()!= 0) {
-            NodoGrafoPonderado currentNode = getNodoConDistanciaMinima(unsettledNodes);
-            unsettledNodes.remove(currentNode);
-            ConjuntoOrdenado adyasencias = currentNode.getAdyasencias();
+        while (nodosSinRevisar.getTamano()!= 0) {
+            NodoGrafoPonderado nodoActual = getNodoConDistanciaMinima(nodosSinRevisar);
+            nodosSinRevisar.remove(nodoActual);
+            ConjuntoOrdenado adyasencias = nodoActual.getAdyasencias();
             for(int i =0; i<adyasencias.getTamano();i++){
                 Arista a = (Arista) adyasencias.get(i);
-                NodoGrafoPonderado adjacentNode = a.getNodoFinal();
-                Integer edgeWeigh = a.getPonderacion();
+                NodoGrafoPonderado nodoAdyacente = a.getNodoFinal();
+                Integer pesoArista = a.getPonderacion();
    
-                if (!settledNodes.existe(adjacentNode)) {
-                    CalcularDistanciaMinima(adjacentNode, edgeWeigh, currentNode);
-                    unsettledNodes.add(adjacentNode);
+                if (!nodosRevisados.existe(nodoAdyacente)) {
+                    CalcularDistanciaMinima(nodoAdyacente, pesoArista, nodoActual);
+                    nodosSinRevisar.add(nodoAdyacente);
                 }
             }
-            settledNodes.add(currentNode);
+            nodosRevisados.add(nodoActual);
         }
         return graph;
     }
 
-    private static void CalcularDistanciaMinima(NodoGrafoPonderado evaluationNode, Integer edgeWeigh, NodoGrafoPonderado sourceNode) {
-        Integer sourceDistance = sourceNode.getDistancia();
-        if (sourceDistance + edgeWeigh < evaluationNode.getDistancia()) {
-            evaluationNode.setDistancia(sourceDistance + edgeWeigh);
-            Lista  shortestPath = new Lista(sourceNode.getShortestPath());
-            shortestPath.add(sourceNode);
-            evaluationNode.setShortestPath(shortestPath);
+    private static void CalcularDistanciaMinima(NodoGrafoPonderado nodoEvaluado, Integer pesoArista, NodoGrafoPonderado pverticeInicial) {
+        Integer distanciaAcomulada = pverticeInicial.getDistancia();
+        if (distanciaAcomulada + pesoArista < nodoEvaluado.getDistancia()) {
+            nodoEvaluado.setDistancia(distanciaAcomulada + pesoArista);
+            Lista  caminoMinimo = new Lista(pverticeInicial.getShortestPath());
+            caminoMinimo.add(pverticeInicial);
+            nodoEvaluado.setShortestPath(caminoMinimo);
         }
     }
 
-        private static NodoGrafoPonderado getNodoConDistanciaMinima(Lista unsettledNodes) {
-        NodoGrafoPonderado lowestDistanceNode = null;
-        int lowestDistance = Integer.MAX_VALUE;
-        for(int i=0; i<unsettledNodes.getTamano();i++){
-            NodoGrafoPonderado node = (NodoGrafoPonderado) unsettledNodes.get(i);    
-            int nodeDistance = node.getDistancia();
-            if (nodeDistance < lowestDistance) {
-                lowestDistance = nodeDistance;
-                lowestDistanceNode = node;
+        private static NodoGrafoPonderado getNodoConDistanciaMinima(Lista nodosSinRevisar) {
+        NodoGrafoPonderado nodoBuscado = null;
+        int distanciaMinima = Integer.MAX_VALUE;
+        for(int i=0; i<nodosSinRevisar.getTamano();i++){
+            NodoGrafoPonderado vnodo = (NodoGrafoPonderado) nodosSinRevisar.get(i);    
+            int distanciaNodo = vnodo.getDistancia();
+            if (distanciaNodo < distanciaMinima) {
+                distanciaMinima = distanciaNodo;
+                nodoBuscado = vnodo;
             }
         }
-        return lowestDistanceNode;
+        return nodoBuscado;
     }
 }
