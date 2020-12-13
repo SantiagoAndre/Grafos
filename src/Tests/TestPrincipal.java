@@ -152,7 +152,7 @@ public class TestPrincipal extends Menu{
             return matrizToString(matriz);
     }
     private String dijkstra(){
-        Dijkstra.calculateShortestPathFromSource(grafo, (NodoGrafoPonderado) grafo.getVertices().get(0));
+        Dijkstra.calcularLaRutaMasCortaDesdeLaFuente(grafo, (NodoGrafoPonderado) grafo.getVertices().get(0));
         ConjuntoOrdenado vertices = grafo.getVertices();
         for(int i =0; i<vertices.getTamano();i++){
             NodoGrafoPonderado nodo = (NodoGrafoPonderado) vertices.get(i);

@@ -6,8 +6,7 @@
 package Grafo;
 
 import Lista.Lista;
-import java.util.LinkedList;
-import java.util.List;
+
 import java.util.function.Predicate;
 
 /**
@@ -16,7 +15,7 @@ import java.util.function.Predicate;
  */
 public  class NodoGrafoPonderado extends NodoGrafo{
     private Integer distancia = Integer.MAX_VALUE;
-    private LinkedList<NodoGrafoPonderado> shortestPath = new LinkedList<>();
+    private Lista shortestPath = new Lista();
     public NodoGrafoPonderado(Comparable dato){
         super(dato);
     }
@@ -75,11 +74,11 @@ public  class NodoGrafoPonderado extends NodoGrafo{
     public void setDistancia(Integer distancia) {
         this.distancia = distancia;
     }
-    public List<NodoGrafoPonderado> getShortestPath() {
+    public Lista getShortestPath() {
         return shortestPath;
     }
 
-    public void setShortestPath(LinkedList<NodoGrafoPonderado> shortestPath) {
+    public void setShortestPath(Lista shortestPath) {
         this.shortestPath = shortestPath;
     }
 }

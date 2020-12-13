@@ -17,6 +17,15 @@ import java.util.function.Predicate;
 public class Lista<T> {
     private Nodo<T> inicio;
     private int tamano=0;
+
+    public Lista(Lista otraLista) {
+        for(int i = 0; i< otraLista.getTamano();i++){
+            this.add((T) otraLista.get(i));
+        }
+    }
+    public Lista() {
+
+    }
     private boolean existeInicio() {
         return getInicio()!= null;
     }
