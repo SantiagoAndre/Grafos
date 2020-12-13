@@ -12,6 +12,7 @@ import Grafo.GrafoPonderadoDirigido;
 import Grafo.NodoGrafo;
 import Grafo.NodoGrafoPonderado;
 import Lista.ConjuntoOrdenado;
+import Lista.Lista;
 import java.util.Arrays;
 
 /**
@@ -62,7 +63,7 @@ public class TestPrincipal extends Menu{
             case 3:
                 System.out.println("Matrix de pesos");
                 return matrizDePesos();
-            case 4:
+            case 7:
                 System.out.println("Dijkstra");
                 return dijkstra();
             case 5:
@@ -151,15 +152,27 @@ public class TestPrincipal extends Menu{
            
             return matrizToString(matriz);
     }
-    private String dijkstra(){
-        Dijkstra.calcularLaRutaMasCortaDesdeLaFuente(grafo, (NodoGrafoPonderado) grafo.getVertices().get(0));
+    private String dijkstra() throws Exception{
+        System.out.print("Ingrese el Nodo Inicial");
+        Comparable inicio = formatearElemento(sc.next());
+        System.out.print("Ingrese el Nodo Final");
+        Comparable fin = formatearElemento(sc.next());
+        NodoGrafoPonderado nodoInicial = (NodoGrafoPonderado) grafo.getVerticeCondato(inicio);
+        NodoGrafoPonderado nodoFinal = (NodoGrafoPonderado) grafo.getVerticeCondato(fin);
+        Dijkstra.calcularLaRutaMasCortaDesdeLaFuente(grafo, (NodoGrafoPonderado) nodoInicial);
+        Lista caminoMinimo = new Lista(nodoFinal.getCaminoMinimo());
+        if(caminoMinimo.esVacia()){
+            return "No existe camino, el grafo debido a que el grafo no es\nconexo/fuertemente conexo";
+        }
+        caminoMinimo.add(nodoFinal);
+        /*
         ConjuntoOrdenado vertices = grafo.getVertices();
         for(int i =0; i<vertices.getTamano();i++){
             NodoGrafoPonderado nodo = (NodoGrafoPonderado) vertices.get(i);
             System.out.print("Nodo "+nodo+": ");
-            System.out.println(nodo.getShortestPath());
-        }
-        return ":3";
+            System.out.println(nodo.getCaminoMinimo());
+        }*/
+        return "Camino "+caminoMinimo + "\nLongitud:  "+nodoFinal.getDistancia();
     }
     
     //-------------------------------- funciones auiliare ----------------------------------------//

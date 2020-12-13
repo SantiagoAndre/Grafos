@@ -15,7 +15,7 @@ import java.util.function.Predicate;
  */
 public  class NodoGrafoPonderado extends NodoGrafo{
     private Integer distancia = Integer.MAX_VALUE;
-    private Lista shortestPath = new Lista();
+    private Lista caminoMinimo = new Lista();
     public NodoGrafoPonderado(Comparable dato){
         super(dato);
     }
@@ -74,11 +74,11 @@ public  class NodoGrafoPonderado extends NodoGrafo{
     public void setDistancia(Integer distancia) {
         this.distancia = distancia;
     }
-    public Lista getShortestPath() {
-        return shortestPath;
+    public Lista getCaminoMinimo() {
+        return caminoMinimo;
     }
 
-    public void setShortestPath(Lista shortestPath) {
-        this.shortestPath = shortestPath;
+    public void setCaminoMinimo(Lista caminoMinimo) {
+        this.caminoMinimo = caminoMinimo;
     }
 }

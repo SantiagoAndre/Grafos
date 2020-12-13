@@ -40,9 +40,9 @@ public class Dijkstra {
         Integer distanciaAcomulada = pverticeInicial.getDistancia();
         if (distanciaAcomulada + pesoArista < nodoEvaluado.getDistancia()) {
             nodoEvaluado.setDistancia(distanciaAcomulada + pesoArista);
-            Lista  caminoMinimo = new Lista(pverticeInicial.getShortestPath());
+            Lista  caminoMinimo = new Lista(pverticeInicial.getCaminoMinimo());
             caminoMinimo.add(pverticeInicial);
-            nodoEvaluado.setShortestPath(caminoMinimo);
+            nodoEvaluado.setCaminoMinimo(caminoMinimo);
         }
     }
 
