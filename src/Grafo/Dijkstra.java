@@ -20,9 +20,9 @@ public class Dijkstra {
         while (nodosSinRevisar.getTamano()!= 0) {
             NodoGrafoPonderado nodoActual = getNodoConDistanciaMinima(nodosSinRevisar);
             nodosSinRevisar.remove(nodoActual);
-            ConjuntoOrdenado adyasencias = nodoActual.getAdyasencias();
-            for(int i =0; i<adyasencias.getTamano();i++){
-                Arista a = (Arista) adyasencias.get(i);
+            ConjuntoOrdenado adyacencias = nodoActual.getAdyacencias();
+            for(int i =0; i<adyacencias.getTamano();i++){
+                Arista a = (Arista) adyacencias.get(i);
                 NodoGrafoPonderado nodoAdyacente = a.getNodoFinal();
                 Integer pesoArista = a.getPonderacion();
    

@@ -1,14 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Grafo;
 
-/**
- *
- * @author santiago
- */
 public class AristaDirigida extends Arista {
     
     public AristaDirigida(NodoGrafoPonderado nodoInicial, NodoGrafoPonderado nodoFinal, Integer ponderacion) {

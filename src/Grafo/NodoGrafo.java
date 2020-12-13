@@ -1,22 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Grafo;
 
 import Lista.ConjuntoOrdenado;
-import Lista.Lista;
 import java.util.Objects;
-import java.util.function.Predicate;
-/**
- *
- * @author santiago
- */
+
 public abstract class NodoGrafo implements Comparable{
     
    Comparable dato;
-    ConjuntoOrdenado adyasencias;// de nodos adyasentes
+    ConjuntoOrdenado adyacencias;// de nodos adyasentes
     public NodoGrafo(Comparable dato){
         setDato(dato);
         setNodosAdyasentes(new ConjuntoOrdenado());
@@ -29,11 +20,11 @@ public abstract class NodoGrafo implements Comparable{
     public void setDato(Comparable dato) {
         this.dato = dato;
     }
-    public ConjuntoOrdenado getAdyasencias() {
-        return adyasencias;
+    public ConjuntoOrdenado getAdyacencias() {
+        return adyacencias;
     }
-    public void setNodosAdyasentes(ConjuntoOrdenado adyasencias) {
-        this.adyasencias = adyasencias;
+    public void setNodosAdyasentes(ConjuntoOrdenado adyacencias) {
+        this.adyacencias = adyacencias;
     }
 
     
@@ -66,7 +57,7 @@ public abstract class NodoGrafo implements Comparable{
     
     
     public String toString1(){
-        String adyasentes=  getAdyasencias().toString("->","","");
+        String adyasentes=  getAdyacencias().toString("->","","");
         if(adyasentes.isEmpty())
             return getDato().toString();
         return getDato().toString()+"-->"+adyasentes;

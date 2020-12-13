@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Grafo;
 
 import Lista.ConjuntoOrdenado;
 import Lista.Lista;
 import java.util.function.Predicate;
 
-/**
- *
- * @author santiago
- */
+
 public  class GrafoPonderado extends Grafo {
     public GrafoPonderado(){
         setVertices(new ConjuntoOrdenado());
@@ -40,7 +33,7 @@ public  class GrafoPonderado extends Grafo {
         Predicate p = (Predicate<Arista>) (Arista arista) -> {
             return arista.getNodoFinal().equals(verticeFinal);
         };
-        ConjuntoOrdenado nodosAdyasentes = verticeInicial.getAdyasencias();
+        ConjuntoOrdenado nodosAdyasentes = verticeInicial.getAdyacencias();
         
         Lista coincidiencias= nodosAdyasentes.getIf(p);
         if(coincidiencias.esVacia())     
@@ -59,7 +52,7 @@ public  class GrafoPonderado extends Grafo {
         ConjuntoOrdenado aristas = new ConjuntoOrdenado();
         for(int i=0;i<getVertices().getTamano();i++){
             NodoGrafo nodo = (NodoGrafo) getVertices().get(i);
-            aristas.addAll(nodo.getAdyasencias());
+            aristas.addAll(nodo.getAdyacencias());
         }
         return aristas;
     }
